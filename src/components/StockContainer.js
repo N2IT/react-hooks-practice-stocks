@@ -1,7 +1,7 @@
 import React from "react";
 import Stock from "./Stock";
 
-function StockContainer({ stocks, handlePurchase }) {
+function StockContainer({ stocks, handleStockClick }) {
   return (
     <div>
       <h2>Stocks</h2>
@@ -13,7 +13,7 @@ function StockContainer({ stocks, handlePurchase }) {
           price={stock.price}
           ticker={stock.ticker}
           type={stock.type}
-          handlePurchase={handlePurchase} />
+          handleStockClick={handleStockClick} />
       ))}
 
     </div>

@@ -1,8 +1,7 @@
 import React from "react";
 import Stock from "./Stock";
 
-function PortfolioContainer({ portfolio, handlePurchase }) {
-  console.log(portfolio)
+function PortfolioContainer({ portfolio, handleStockClick }) {
   return (
     <div>
       <h2>My Portfolio</h2>
@@ -14,7 +13,7 @@ function PortfolioContainer({ portfolio, handlePurchase }) {
           price={stock.price}
           ticker={stock.ticker}
           type={stock.type}
-          handlePurchase={handlePurchase} />
+          handleStockClick={handleStockClick} />
       ))}
     </div>
   );
