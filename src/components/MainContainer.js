@@ -13,12 +13,19 @@ function MainContainer() {
       .then((stocks) => setStocks(stocks))
   }, [])
 
+function handlePurchase(name){
+    const purchasedStocks = stocks.filter((stock) => {
+      return stock.name !== name
+    })
+    setStocks(purchasedStocks)
+  }
+
   return (
     <div>
       <SearchBar />
       <div className="row">
         <div className="col-8">
-          <StockContainer stocks={stocks} />
+          <StockContainer handlePurchase={handlePurchase} stocks={stocks} />
         </div>
         <div className="col-4">
           <PortfolioContainer />
