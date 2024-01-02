@@ -1,6 +1,6 @@
 import React from "react";
 
-function SearchBar({ handleSort, handleFilter }) {
+function SearchBar({ sortBy, handleSort, handleFilter }) {
 
   return (
     <div>
