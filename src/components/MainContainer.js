@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 function MainContainer() {
 
   const [stocks, setStocks] = useState([])
+  const [portfolio, setAsPortfolio] = useState([])
 
   useEffect(() => {
     fetch(`http://localhost:3001/stocks`)
@@ -13,12 +14,22 @@ function MainContainer() {
       .then((stocks) => setStocks(stocks))
   }, [])
 
-function handlePurchase(name){
-    const purchasedStocks = stocks.filter((stock) => {
+  function handlePurchase(name) {
+    const removeFromStockContainer = stocks.filter((stock) => {
       return stock.name !== name
     })
-    setStocks(purchasedStocks)
+
+    setStocks(removeFromStockContainer)
+    addToPortfolio(name)
   }
+
+  function addToPortfolio(name) {
+    const portfolioStock = stocks.find((stock) => stock.name === name);
+  
+    if (portfolioStock) {
+      setAsPortfolio([...portfolio, portfolioStock]);
+    }
+  }  
 
   return (
     <div>
@@ -28,7 +39,7 @@ function handlePurchase(name){
           <StockContainer handlePurchase={handlePurchase} stocks={stocks} />
         </div>
         <div className="col-4">
-          <PortfolioContainer />
+          <PortfolioContainer portfolio={portfolio} setAsPortfolio={setAsPortfolio} />
         </div>
       </div>
     </div>
