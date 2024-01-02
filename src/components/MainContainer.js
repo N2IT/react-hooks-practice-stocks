@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 function MainContainer() {
   const [stocks, setStocks] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
+  const [ category, setCategory ] = useState("All")
 
   useEffect(() => {
     fetch(`http://localhost:3001/stocks`)
@@ -35,12 +36,30 @@ function MainContainer() {
     }
   }
 
+  function handleFilter(event){
+    setCategory(event)
+  }
+
+  const stocksToDisplay = stocks.filter((stock) => {
+    if (category === "All"){
+      return true
+    } else {
+      return stock.type === category
+    }
+  })
+
+  function handleSort(event){
+    console.log(event)
+  }
+
+
+
   return (
     <div>
-      <SearchBar />
+      <SearchBar handleSort={handleSort} handleFilter={handleFilter} />
       <div className="row">
         <div className="col-8">
-          <StockContainer handleStockClick={handleStockClick} stocks={stocks} />
+          <StockContainer handleStockClick={handleStockClick} stocks={stocksToDisplay} />
         </div>
         <div className="col-4">
           <PortfolioContainer portfolio={portfolio} setPortfolio={setPortfolio} handleStockClick={handleStockClick} />
