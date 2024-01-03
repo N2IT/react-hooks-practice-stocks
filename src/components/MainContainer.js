@@ -6,8 +6,9 @@ import SearchBar from "./SearchBar";
 function MainContainer() {
   const [stocks, setStocks] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
-  const [category, setCategory] = useState("All");
-  const [sortBy, setSortBy] = useState(""); // To store the sorting criteria
+  const [category, setCategory] = useState("All")
+  const [sortedStocks, setSortedStocks] = useState([])
+
 
   useEffect(() => {
     fetch(`http://localhost:3001/stocks`)
@@ -38,29 +39,36 @@ function MainContainer() {
   }
 
   function handleFilter(event) {
-    setCategory(event);
+    setCategory(event)
   }
 
-  // Sort the stocksToDisplay array based on the sorting criteria
-  const stocksToDisplay = [...stocks];
-  const updatedStocksToDisplay = stocksToDisplay.map((stocks) => stocks.name)
-  // console.log(updatedStocksToDisplay)
-  if (sortBy === "Alphabetical") {
-    stocksToDisplay.sort();
-  } else if (sortBy === "Price") {
-    stocksToDisplay.sort((a, b) => a.price - b.price);
-  }
+  const stocksToDisplay = stocks.filter((stock) => {
+    if (category === "All") {
+      return true
+    } else {
+      return stock.type === category
+    }
+  })
 
   function handleSort(event) {
-    setSortBy(event);
+    // console.log(event)
+    if (event === "Alphabetically") {
+      const sortedStocks = [...stocks].sort((a, b) => a.name.localeCompare(b.name))
+      setStocks(sortedStocks)
+    } else if (event === "Price") {
+      const sortedStocks = [...stocks].sort((a, b) => a.price - b.price)
+      setStocks(sortedStocks)
+    }
   }
+
+
 
   return (
     <div>
-      <SearchBar sortBy={sortBy} handleSort={handleSort} handleFilter={handleFilter} />
+      <SearchBar handleSort={handleSort} handleFilter={handleFilter} />
       <div className="row">
         <div className="col-8">
-          <StockContainer handleStockClick={handleStockClick} stocks={stocksToDisplay} />
+          <StockContainer handleStockClick={handleStockClick} stocks={sortedStocks.length ? sortedStocks : stocksToDisplay} />
         </div>
         <div className="col-4">
           <PortfolioContainer portfolio={portfolio} setPortfolio={setPortfolio} handleStockClick={handleStockClick} />
